@@ -91,6 +91,13 @@ function game() {
     console.log(computerSelection);
     }
   }
+  if (playerScore > computerScore) {
+    console.log('You won!! Congratulations!')
+  } else if (playerScore < computerScore) {
+    console.log('You lost... booo!!')
+  } else {
+    console.log("It's a draw...")
+  }
 }
 
 /////////////////////// GAME ///////////////////////
