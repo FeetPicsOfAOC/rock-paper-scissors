@@ -1,20 +1,60 @@
-// game options: rock, paper, scissors
-const options = ['r', 'p', 's'];
+giveEventListenersToButtons();
 
-// function for random selection for the computer player
+let playerScore = 0;
+let computerScore = 0;
+
+function game(e) {
+
+  const playerSelection = e.target.value;
+  const computerSelection = computerPlay();
+
+  resultOfRound = playRound(playerSelection, computerSelection);
+  switch (resultOfRound.score) {
+    case "player":
+      ++playerScore;
+      break;
+    case "computer":
+      ++computerScore;
+      break;
+    case "draw":
+      break;
+    default:
+      console.log('hm... sonething went wrong!!');
+      break;
+  }
+
+  displayScore(playerScore, computerScore);
+  displayRoundResult(resultOfRound.message);
+
+  if (playerScore === 5 || computerScore === 5) {
+    resultOfGame = gameResult(playerScore, computerScore);
+    changeDivText('#resultOfGame', resultOfGame)
+    displayScore(playerScore, computerScore, true); 
+    playerScore = 0;
+    computerScore = 0;
+  }
+}
+
 function computerPlay() {
+  const options = ['r', 'p', 's'];
   let selection = Math.ceil(Math.random() * 3) - 1;
   return options[selection];
 }
 
-// play round function which evaluates result and returns an object with message and score
+// utility function that is used for changing content of divs
+function changeDivText(idOfSelectedDiv, divTextContent) {
+  selectedDiv = document.querySelector(`${idOfSelectedDiv}`);
+  selectedDiv.textContent = `${divTextContent}`;
+}
+
+// play round function which evaluates result and returns an object with a message and a score
 function playRound(playerSelection, computerSelection) {
 
   switch (playerSelection) {
 
     // player chose rock
     case 'r':
-      console.log('Player chose Rock!');
+      changeDivText('#playerChoice', 'Player chose rock!');
       if (computerSelection === playerSelection) {
         return {message:"Computer chose rock!! It's a draw.", score:"draw"}
       } else if (computerSelection === 'p') {
@@ -26,7 +66,7 @@ function playRound(playerSelection, computerSelection) {
 
     // player chose paper
     case 'p':
-      console.log('Player chose Paper!');
+      changeDivText('#playerChoice', 'Player chose paper!');
       if (computerSelection === 'r') {
         return {message:"Computer chose rock!! Paper beats rock... for some reason... you won!", score:"player"}
       } else if (computerSelection === 'p') {
@@ -38,7 +78,7 @@ function playRound(playerSelection, computerSelection) {
 
     // player chose scissors
     case 's':
-      console.log('Player chose Scissors!');
+      changeDivText('#playerChoice', 'Player chose scissors!');
       if (computerSelection === 'r') {
         return {message:"Computer chose rock!! Your scissors were served! You lost...", score:"computer"}
       } else if (computerSelection === 'p') {
@@ -50,55 +90,34 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
-// the game function which counts the scores and plays 5 game rounds
-function game() {
-
-  // scores variables
-  let playerScore = 0;
-  let computerScore = 0;
-
-  // game loop of 5 rounds
-  for (let i = 0; i < 5; i++) {
-
-    // everyone chooses their option
-    const playerSelection = prompt('Choose (r)ock, (p)aper or (s)cissors!').trim().toLowerCase();
-    const computerSelection = computerPlay();
-
-    result = playRound(playerSelection, computerSelection);
-
-    // evaluation of recieved object
-    console.log(result.message)
-
-    switch (result.score) {
-      case "player":
-        ++playerScore;
-        console.log(playerScore);
-        console.log(computerScore);
-        break;
-      case "computer":
-        ++computerScore;
-        console.log(playerScore);
-        console.log(computerScore);
-        break;
-      case "draw":
-        console.log(playerScore);
-        console.log(computerScore);
-        break;
-      default:
-        console.log('hm... sonething went wrong!!')
-
-    console.log(playerSelection);
-    console.log(computerSelection);
-    }
-  }
+function gameResult (playerScore, computerScore) {
   if (playerScore > computerScore) {
-    console.log('You won!! Congratulations!')
+    return 'You won!! Congratulations!'
   } else if (playerScore < computerScore) {
-    console.log('You lost... booo!!')
+    return 'You lost... booo!!'
   } else {
-    console.log("It's a draw...")
+    return "It's a draw..."
   }
 }
 
-/////////////////////// GAME ///////////////////////
-game();
+function displayScore(playerScore, computerScore, reset = false) {
+  if (reset) {
+    scoreMessage = `Your score: 0, Computer score: 0`; 
+  } else {
+    scoreMessage = `Your score: ${playerScore}, Computer score: ${computerScore}`;
+  }
+  changeDivText('#currentScore', scoreMessage)
+}
+
+function displayRoundResult(resultOfRoundMessage) {
+  roundResultDiv = document.querySelector('#resultOfRound');
+  roundResultDiv.textContent = resultOfRoundMessage;
+}
+
+function giveEventListenersToButtons() {
+  btn = document.querySelectorAll('button');
+  btn.forEach((button) => {
+    button.addEventListener('click', game)
+  });
+}
+
