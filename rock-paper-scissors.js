@@ -9,7 +9,7 @@ function game(e) {
   const computerSelection = computerPlay();
 
   resultOfRound = playRound(playerSelection, computerSelection);
-  switch (resultOfRound.score) {
+  switch (resultOfRound.winner) {
     case "player":
       ++playerScore;
       break;
@@ -56,11 +56,11 @@ function playRound(playerSelection, computerSelection) {
     case 'r':
       changeDivText('#playerChoice', 'Player chose rock!');
       if (computerSelection === playerSelection) {
-        return {message:"Computer chose rock!! It's a draw.", score:"draw"}
+        return {message:"Computer chose rock!! It's a draw.", winner:"draw"}
       } else if (computerSelection === 'p') {
-        return {message:'Dayum! Computer chose paper. Better luck next time, you lost...', score:"computer"}
+        return {message:'Dayum! Computer chose paper. Better luck next time, you lost...', winner:"computer"}
       } else {
-        return {message:'HOLY WATER! Computer chose scissors! Aaand you won!!!', score:"player"}
+        return {message:'HOLY WATER! Computer chose scissors! Aaand you won!!!', winner:"player"}
       }
       break;
 
@@ -68,11 +68,11 @@ function playRound(playerSelection, computerSelection) {
     case 'p':
       changeDivText('#playerChoice', 'Player chose paper!');
       if (computerSelection === 'r') {
-        return {message:"Computer chose rock!! Paper beats rock... for some reason... you won!", score:"player"}
+        return {message:"Computer chose rock!! Paper beats rock... for some reason... you won!", winner:"player"}
       } else if (computerSelection === 'p') {
-        return {message:'Computer chose paper! PAPER DOES NOTHING TO PAPER! Draw.', score:"draw"}
+        return {message:'Computer chose paper! PAPER DOES NOTHING TO PAPER! Draw.', winner:"draw"}
       } else {
-        return {message:'Computer just shredded you with its scissors!! You lost...', score:"computer"}
+        return {message:'Computer just shredded you with its scissors!! You lost...', winner:"computer"}
       }
       break;
 
@@ -80,11 +80,11 @@ function playRound(playerSelection, computerSelection) {
     case 's':
       changeDivText('#playerChoice', 'Player chose scissors!');
       if (computerSelection === 'r') {
-        return {message:"Computer chose rock!! Your scissors were served! You lost...", score:"computer"}
+        return {message:"Computer chose rock!! Your scissors were served! You lost...", winner:"computer"}
       } else if (computerSelection === 'p') {
-        return {message:'Computer chose paper! Worst mistake of his life... you won!', score:"player"}
+        return {message:'Computer chose paper! Worst mistake of his life... you won!', winner:"player"}
       } else {
-        return {message:'Computer chose scissors... draw.', score:"draw"}
+        return {message:'Computer chose scissors... draw.', winner:"draw"}
       }
       break;
   }
