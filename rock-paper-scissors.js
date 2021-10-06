@@ -30,7 +30,7 @@ function game(e) {
     computerScore = 0;
   }
 
-  displayRoundResult(resultOfRound.message);
+  changeDivText('#resultOfRound', resultOfRound.message)
   displayScore(playerScore, computerScore);
 }
 
@@ -99,11 +99,6 @@ function gameResult (playerScore, computerScore) {
 function displayScore(playerScore, computerScore) {
   scoreMessage = `Your score: ${playerScore}, Computer score: ${computerScore}`;
   changeDivText('#currentScore', scoreMessage)
-}
-
-function displayRoundResult(resultOfRoundMessage) {
-  roundResultDiv = document.querySelector('#resultOfRound');
-  roundResultDiv.textContent = resultOfRoundMessage;
 }
 
 function giveEventListenersToButtons() {
