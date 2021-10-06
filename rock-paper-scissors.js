@@ -23,16 +23,15 @@ function game(e) {
       break;
   }
 
-  displayScore(playerScore, computerScore);
-  displayRoundResult(resultOfRound.message);
-
   if (playerScore === 5 || computerScore === 5) {
     resultOfGame = gameResult(playerScore, computerScore);
     changeDivText('#resultOfGame', resultOfGame)
-    displayScore(playerScore, computerScore, true); 
     playerScore = 0;
     computerScore = 0;
   }
+
+  displayRoundResult(resultOfRound.message);
+  displayScore(playerScore, computerScore);
 }
 
 function computerPlay() {
@@ -100,12 +99,8 @@ function gameResult (playerScore, computerScore) {
   }
 }
 
-function displayScore(playerScore, computerScore, reset = false) {
-  if (reset) {
-    scoreMessage = `Your score: 0, Computer score: 0`; 
-  } else {
-    scoreMessage = `Your score: ${playerScore}, Computer score: ${computerScore}`;
-  }
+function displayScore(playerScore, computerScore) {
+  scoreMessage = `Your score: ${playerScore}, Computer score: ${computerScore}`;
   changeDivText('#currentScore', scoreMessage)
 }
 
