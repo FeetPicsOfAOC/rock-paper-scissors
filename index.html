@@ -2,19 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Rock-paper-scissors</title>
+  <title>Rock Paper Scissors</title>
+  <link rel="stylesheet" href="style.css" media="all">
   <script src="rock-paper-scissors.js" defer></script>
 </head>
 <body>
-  <h1>Choose (r)ock, (p)aper or (s)cissors!</h1>
-  <button value="r">Rock</button>
-  <button value="p">Paper</button>
-  <button value="s">Scissors</button>
-  <div id="playerChoice"><br></div>
+  <div class="container">
+    <h1>Choose rock, paper or scissors!</h1>
+    <div id="resultOfGame"><br></div>
+    <div class="buttons">
+      <input class="option" data-choice="rock" type="image" src="img/rock.webp"/>
+      <input class="option" data-choice="paper" type="image" src="img/paper.webp"/>
+      <input class="option" data-choice="scissors" type="image" src="img/scissors.webp"/>
+    </div>
+    <div id="playerChoice"><br></div>
 
-  <div>RESULTS ARE:</div>
-  <div id="currentScore">Your score: 0, Computer score: 0</div>
-  <div id="resultOfRound">Results of the round are...</div>
-  <div id="resultOfGame">Results of the game are...</div>
+    <div>RESULTS ARE:</div>
+    <div id="currentScore">Your score: 0, Computer score: 0</div>
+    <div id="resultOfRound">Results of the round are...</div>
+  </div>
 </body>
 </html>

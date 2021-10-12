@@ -1,41 +1,39 @@
-giveEventListenersToButtons();
+giveEventListenersToInputs();
 
 let playerScore = 0;
 let computerScore = 0;
 
 function game(e) {
 
-  const playerSelection = e.target.value;
+  const playerSelection = e.target.dataset.choice;
   const computerSelection = computerPlay();
 
   resultOfRound = playRound(playerSelection, computerSelection);
-  switch (resultOfRound.winner) {
-    case 'player':
-      ++playerScore;
-      break;
-    case 'computer':
-      ++computerScore;
-      break;
-    case 'draw':
-      break;
-    default:
-      console.log('hm... sonething went wrong!!');
-      break;
+  if (resultOfRound.winner === 'player') {
+    ++playerScore;
+  } else if (resultOfRound.winner === 'computer') {
+    ++computerScore;
   }
+  changeDivText('#resultOfRound', resultOfRound.message);
 
+  let resultOfGame;
   if (playerScore === 5 || computerScore === 5) {
-    resultOfGame = gameResult(playerScore, computerScore);
-    changeDivText('#resultOfGame', resultOfGame)
+    if (playerScore > computerScore) {
+      resultOfGame = {message: 'You won!! Congratulations!', color: 'green'};
+    } else if (playerScore < computerScore) {
+      resultOfGame = {message: 'You lost... booo!!', color: 'red'};
+    }
+    
+    showGameResultMessage(resultOfGame);
     playerScore = 0;
     computerScore = 0;
   }
 
-  changeDivText('#resultOfRound', resultOfRound.message)
   displayScore(playerScore, computerScore);
 }
 
 function computerPlay() {
-  const options = ['r', 'p', 's'];
+  const options = ['rock', 'paper', 'scissors'];
   let selection = Math.ceil(Math.random() * 3) - 1;
   return options[selection];
 }
@@ -49,50 +47,18 @@ function changeDivText(idOfSelectedDiv, divTextContent) {
 // play round function which evaluates result and returns an object with a message and a score
 function playRound(playerSelection, computerSelection) {
 
-  switch (playerSelection) {
+  if (playerSelection === computerSelection) {
+    return {message: "It's a draw!", winner: 'draw'}
 
-    case 'r':
-      changeDivText('#playerChoice', 'Player chose rock!');
-      if (computerSelection === playerSelection) {
-        return {message:"Computer chose rock!! It's a draw.", winner:'draw'}
-      } else if (computerSelection === 'p') {
-        return {message:'Dayum! Computer chose paper. Better luck next time, you lost...', winner:'computer'}
-      } else {
-        return {message:'HOLY WATER! Computer chose scissors! Aaand you won!!!', winner:'player'}
-      }
-      break;
+  } else if ((playerSelection === 'rock' && computerSelection === 'paper') ||
+            (playerSelection === 'paper' && computerSelection === 'scissors') ||
+            (playerSelection === 'scissors' && computerSelection === 'rock')) {
+    return {message: 'You lost this round!', winner: 'computer'}
 
-    case 'p':
-      changeDivText('#playerChoice', 'Player chose paper!');
-      if (computerSelection === 'r') {
-        return {message:'Computer chose rock!! Paper beats rock... for some reason... you won!', winner:'player'}
-      } else if (computerSelection === 'p') {
-        return {message:'Computer chose paper! PAPER DOES NOTHING TO PAPER! Draw.', winner:'draw'}
-      } else {
-        return {message:'Computer just shredded you with its scissors!! You lost...', winner:'computer'}
-      }
-      break;
-
-    case 's':
-      changeDivText('#playerChoice', 'Player chose scissors!');
-      if (computerSelection === 'r') {
-        return {message:'Computer chose rock!! Your scissors were served! You lost...', winner:'computer'}
-      } else if (computerSelection === 'p') {
-        return {message:'Computer chose paper! Worst mistake of his life... you won!', winner:'player'}
-      } else {
-        return {message:'Computer chose scissors... draw.', winner:'draw'}
-      }
-      break;
-  }
-}
-
-function gameResult (playerScore, computerScore) {
-  if (playerScore > computerScore) {
-    return 'You won!! Congratulations!'
-  } else if (playerScore < computerScore) {
-    return 'You lost... booo!!'
-  } else {
-    return "It's a draw..."
+  } else if ((playerSelection === 'rock' && computerSelection === 'scissors') ||
+            (playerSelection === 'paper' && computerSelection === 'rock') ||
+            (playerSelection === 'scissors' && computerSelection === 'paper')) {
+    return {message: 'You win this round!', winner: 'player'}
   }
 }
 
@@ -101,10 +67,16 @@ function displayScore(playerScore, computerScore) {
   changeDivText('#currentScore', scoreMessage)
 }
 
-function giveEventListenersToButtons() {
-  btn = document.querySelectorAll('button');
-  btn.forEach((button) => {
-    button.addEventListener('click', game)
+function showGameResultMessage(resultOfGame) {
+  changeDivText('#resultOfGame', resultOfGame.message)
+  let resultMessage = document.querySelector('#resultOfGame');
+  resultMessage.style.color = resultOfGame.color;
+}
+
+function giveEventListenersToInputs() {
+  inputs = document.querySelectorAll('input[type=image]');
+  inputs.forEach((input) => {
+    input.addEventListener('click', game)
   });
 }
 
