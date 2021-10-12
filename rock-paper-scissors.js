@@ -63,14 +63,30 @@ function playRound(playerSelection, computerSelection) {
 }
 
 function displayScore(playerScore, computerScore) {
-  scoreMessage = `Your score: ${playerScore}, Computer score: ${computerScore}`;
-  changeDivText('#currentScore', scoreMessage)
+  let scoreMessage = `Your score: ${playerScore}, Computer score: ${computerScore}`;
+  changeDivText('#currentScore', scoreMessage);
 }
 
 function showGameResultMessage(resultOfGame) {
   changeDivText('#resultOfGame', resultOfGame.message)
   let resultMessage = document.querySelector('#resultOfGame');
   resultMessage.style.color = resultOfGame.color;
+}
+
+function displayResultOfRoundInLog(playerSelection, computerSelection, resultOfRound) {
+  let imageOfPlayerSelection = `img/${playerSelection}.webp`;
+  let imageOfComputerSelection = `img/${computerSelection}.webp`;
+
+  let playerLog = document.querySelector('#player-log');
+  let computerLog = document.querySelector('#computer-log');
+  
+  if (resultOfRound.winner === 'player') {
+    return
+  } else if (resultOfRound.winner === 'computer') {
+    return
+  } else if (resultOfRound.winner === 'draw') {
+    return
+  }
 }
 
 function giveEventListenersToInputs() {
