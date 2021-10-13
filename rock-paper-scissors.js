@@ -10,13 +10,7 @@ function game(e) {
   const computerSelection = computerPlay();
 
   resultOfRound = playRound(playerSelection, computerSelection);
-  if (resultOfRound.winner === 'player') {
-    ++playerScore;
-  } else if (resultOfRound.winner === 'computer') {
-    ++computerScore;
-  }
 
-  roundNumber++;
   displaySelectionAndWinnerOfRound(playerSelection, computerSelection, resultOfRound);
   displayResultOfRoundInLog(playerSelection, computerSelection, resultOfRound, roundNumber);
 
@@ -48,6 +42,7 @@ function changeDivText(idOfSelectedDiv, divTextContent) {
 }
 
 function playRound(playerSelection, computerSelection) {
+  roundNumber++;
 
   if (playerSelection === computerSelection) {
     return {message: "It's a draw!", winner: 'draw'}
@@ -55,11 +50,13 @@ function playRound(playerSelection, computerSelection) {
   } else if ((playerSelection === 'rock' && computerSelection === 'paper') ||
             (playerSelection === 'paper' && computerSelection === 'scissors') ||
             (playerSelection === 'scissors' && computerSelection === 'rock')) {
+    computerScore++;
     return {message: 'You lost this round!', winner: 'computer'}
 
   } else if ((playerSelection === 'rock' && computerSelection === 'scissors') ||
             (playerSelection === 'paper' && computerSelection === 'rock') ||
             (playerSelection === 'scissors' && computerSelection === 'paper')) {
+    playerScore++;
     return {message: 'You win this round!', winner: 'player'}
   }
 }
