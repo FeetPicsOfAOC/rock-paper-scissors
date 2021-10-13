@@ -2,6 +2,7 @@ giveEventListenersToInputs();
 
 let playerScore = 0;
 let computerScore = 0;
+let roundNumber = 0;
 
 function game(e) {
 
@@ -14,20 +15,22 @@ function game(e) {
   } else if (resultOfRound.winner === 'computer') {
     ++computerScore;
   }
-  changeDivText('#resultOfRound', resultOfRound.message);
-  displayResultOfRoundInLog(playerSelection, computerSelection, resultOfRound);
+
+  roundNumber++;
+  displaySelectionAndWinnerOfRound(playerSelection, computerSelection, resultOfRound);
+  displayResultOfRoundInLog(playerSelection, computerSelection, resultOfRound, roundNumber);
 
   let resultOfGame;
   if (playerScore === 5 || computerScore === 5) {
     if (playerScore > computerScore) {
-      resultOfGame = {message: 'You won!! Congratulations!', color: 'green'};
+      resultOfGame = {message: 'You won!! Congratulations!', class: 'player-good'};
     } else if (playerScore < computerScore) {
-      resultOfGame = {message: 'You lost... booo!!', color: 'red'};
+      resultOfGame = {message: 'You lost... booo!!', class: 'computer-bad'};
     }
     
     showGameResultMessage(resultOfGame);
-    playerScore = 0;
-    computerScore = 0;
+    disableImageInputs();
+    createResetButton();
   }
 
   displayScore(playerScore, computerScore);
@@ -39,13 +42,11 @@ function computerPlay() {
   return options[selection];
 }
 
-// utility function that is used for changing content of divs
 function changeDivText(idOfSelectedDiv, divTextContent) {
   selectedDiv = document.querySelector(`${idOfSelectedDiv}`);
   selectedDiv.textContent = `${divTextContent}`;
 }
 
-// play round function which evaluates result and returns an object with a message and a score
 function playRound(playerSelection, computerSelection) {
 
   if (playerSelection === computerSelection) {
@@ -63,18 +64,13 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
-function displayScore(playerScore, computerScore) {
-  let scoreMessage = `Your score: ${playerScore}, Computer score: ${computerScore}`;
-  changeDivText('#currentScore', scoreMessage);
+function displaySelectionAndWinnerOfRound(playerSelection, computerSelection, resultOfRound) {
+  changeDivText('#player-choice', `You chose ${playerSelection}.`);
+  changeDivText('#computer-choice', `Computer chose ${computerSelection}.`);
+  changeDivText('#result-of-round', resultOfRound.message);
 }
 
-function showGameResultMessage(resultOfGame) {
-  changeDivText('#resultOfGame', resultOfGame.message)
-  let resultMessage = document.querySelector('#resultOfGame');
-  resultMessage.style.color = resultOfGame.color;
-}
-
-function displayResultOfRoundInLog(playerSelection, computerSelection, resultOfRound) {
+function displayResultOfRoundInLog(playerSelection, computerSelection, resultOfRound, roundNumber) {
   let newLogItemForPlayer = document.createElement('img');
   let newLogItemForComputer = document.createElement('img');
   let newLogItemForWinners = document.createElement('div');
@@ -94,13 +90,13 @@ function displayResultOfRoundInLog(playerSelection, computerSelection, resultOfR
   let winnerLog;
   let winnerLogClass;
   if (resultOfRound.winner === 'player') {
-    winnerLog = 'You won!';
+    winnerLog = `You won round ${roundNumber}!`;
     winnerLogClass = 'log-winner-player';
   } else if (resultOfRound.winner === 'computer') {
-    winnerLog = 'You lost!';
+    winnerLog = `You lost round ${roundNumber}!`;
     winnerLogClass = 'log-winner-computer';
   } else if (resultOfRound.winner === 'draw') {
-    winnerLog = 'Draw!'
+    winnerLog = `Draw in round ${roundNumber}!`
     winnerLogClass = 'log-winner-draw';
   }
   newLogItemForWinners.textContent = winnerLog;
@@ -109,10 +105,64 @@ function displayResultOfRoundInLog(playerSelection, computerSelection, resultOfR
   winnersLog.appendChild(newLogItemForWinners);
 }
 
+function displayScore(playerScore, computerScore) {
+  let scoreMessage = `Your score: ${playerScore}, Computer score: ${computerScore}`;
+  changeDivText('#current-score', scoreMessage);
+}
+
+function showGameResultMessage(resultOfGame) {
+  changeDivText('#result-of-game', resultOfGame.message)
+  let resultMessage = document.querySelector('#result-of-game');
+  resultMessage.classList.add(resultOfGame.class);
+}
+
+function disableImageInputs() {
+  inputs = document.querySelector('#inputs').children;
+  for (let input of inputs) {
+    input.disabled = true;
+  }
+}
+
+function enableImageInputs() {
+  inputs = document.querySelector('#inputs').children;
+  for (let input of inputs) {
+    input.disabled = false;
+  }
+  console.log('inputs were enabled!');
+}
+
+function createResetButton() {
+  let resetButtonDiv = document.querySelector('#reset-button');
+  let button = document.createElement('button');
+  button.textContent = 'Play again!'
+  button.classList.add('reset-button');
+  button.addEventListener('click', resetGame);
+  
+  resetButtonDiv.appendChild(button);
+}
+
+function resetGame() {
+  playerScore = 0;
+  computerScore = 0;
+  roundNumber = 0;
+  displayScore(playerScore, computerScore);
+
+  let logs = document.querySelector('#logs').childNodes;
+  let resetButtonDiv = document.querySelector('#reset-button')
+
+  for (let log of logs) {
+    log.innerHTML = '';
+  }
+  resetButtonDiv.innerHTML = '<br>';
+  changeDivText('#result-of-game', '')
+
+  enableImageInputs();
+}
+
 function giveEventListenersToInputs() {
   inputs = document.querySelectorAll('input[type=image]');
   inputs.forEach((input) => {
-    input.addEventListener('click', game)
+    input.addEventListener('click', game);
   });
 }
 

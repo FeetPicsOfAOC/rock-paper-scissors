@@ -1,3 +1,9 @@
+html {
+  background-color: #27006F;
+  color: #E9E5FE;
+  font-family: sans-serif;
+}
+
 .container,
 .inputs {
   display: flex;
@@ -26,17 +32,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #1A2B56;
 }
 
 .logs {
   display: flex;
   justify-content: center;
   gap: 14rem;
-}
-
-.log-vertical-line {
-  border-left: 6px solid black;
-  height: 20rem;
 }
 
 .log-items, .log-winners {
@@ -55,14 +57,25 @@
   align-items: center;
 }
 
-.log-winner-player {
-  color: Green;
+.log-winner-player,
+.player-good {
+  color: #00F931;
 }
 
-.log-winner-computer {
-  color: Red;
+.log-winner-computer,
+.computer-bad {
+  color: #F76F72;
 }
 
 .log-winner-draw {
-  color: Blue;
+  color: Lightgray;
+}
+
+.reset-button {
+  background-color: #1A2B56;
+  color: White;
+  border: 1px solid Black;
+  border-radius: 8px;
+  padding: 8px 46px;
+  font-weight: bold;
 }
