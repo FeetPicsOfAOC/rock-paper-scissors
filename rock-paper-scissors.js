@@ -128,7 +128,6 @@ function enableImageInputs() {
   for (let input of inputs) {
     input.disabled = false;
   }
-  console.log('inputs were enabled!');
 }
 
 function createResetButton() {
