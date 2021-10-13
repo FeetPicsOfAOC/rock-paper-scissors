@@ -15,6 +15,7 @@ function game(e) {
     ++computerScore;
   }
   changeDivText('#resultOfRound', resultOfRound.message);
+  displayResultOfRoundInLog(playerSelection, computerSelection, resultOfRound);
 
   let resultOfGame;
   if (playerScore === 5 || computerScore === 5) {
@@ -74,19 +75,38 @@ function showGameResultMessage(resultOfGame) {
 }
 
 function displayResultOfRoundInLog(playerSelection, computerSelection, resultOfRound) {
-  let imageOfPlayerSelection = `img/${playerSelection}.webp`;
-  let imageOfComputerSelection = `img/${computerSelection}.webp`;
+  let newLogItemForPlayer = document.createElement('img');
+  let newLogItemForComputer = document.createElement('img');
+  let newLogItemForWinners = document.createElement('div');
 
+  newLogItemForPlayer.src = `img/${playerSelection}.webp`; 
+  newLogItemForComputer.src = `img/${computerSelection}.webp`;
+  newLogItemForPlayer.classList.add('log-item');
+  newLogItemForComputer.classList.add('log-item');
+  
   let playerLog = document.querySelector('#player-log');
   let computerLog = document.querySelector('#computer-log');
-  
+  let winnersLog = document.querySelector('#winners-log');
+
+  playerLog.appendChild(newLogItemForPlayer);
+  computerLog.appendChild(newLogItemForComputer);
+
+  let winnerLog;
+  let winnerLogClass;
   if (resultOfRound.winner === 'player') {
-    return
+    winnerLog = 'You won!';
+    winnerLogClass = 'log-winner-player';
   } else if (resultOfRound.winner === 'computer') {
-    return
+    winnerLog = 'You lost!';
+    winnerLogClass = 'log-winner-computer';
   } else if (resultOfRound.winner === 'draw') {
-    return
+    winnerLog = 'Draw!'
+    winnerLogClass = 'log-winner-draw';
   }
+  newLogItemForWinners.textContent = winnerLog;
+  newLogItemForWinners.classList.add(winnerLogClass);
+  
+  winnersLog.appendChild(newLogItemForWinners);
 }
 
 function giveEventListenersToInputs() {
