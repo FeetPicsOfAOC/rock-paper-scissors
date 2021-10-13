@@ -150,7 +150,10 @@ function resetGame() {
     log.innerHTML = '';
   }
   resetButtonDiv.innerHTML = '<br>';
-  changeDivText('#result-of-game', '')
+  changeDivText('#result-of-game', '');
+
+  let resultOfGameDiv = document.querySelector('#result-of-game');
+  resultOfGameDiv.classList = '';
 
   enableImageInputs();
 }
