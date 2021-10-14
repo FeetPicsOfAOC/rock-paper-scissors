@@ -9,6 +9,9 @@ function game(e) {
   const playerSelection = e.target.dataset.choice;
   const computerSelection = computerPlay();
 
+  let pressedInput = e.target;
+  pressedInput.classList.add('pressed');
+
   resultOfRound = playRound(playerSelection, computerSelection);
 
   displaySelectionAndWinnerOfRound(playerSelection, computerSelection, resultOfRound);
@@ -158,10 +161,16 @@ function resetGame() {
   enableImageInputs();
 }
 
+function removeTransition(e) {
+  if (e.propertyName !== 'transform') return;
+  this.classList.remove('pressed');
+}
+
 function giveEventListenersToInputs() {
   inputs = document.querySelectorAll('input[type=image]');
   inputs.forEach((input) => {
     input.addEventListener('click', game);
+    input.addEventListener('transitionend', removeTransition);
   });
 }
 
